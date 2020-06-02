@@ -10,7 +10,8 @@ import './Budget.css';
 import { connect } from 'react-redux'
 // IMPORT THE ACTION CREATOR FROM THE REDUCER FILE FOR USE BY THE CONNECT METHOD, WHICH THEN ADDS THE FUNCTION TO THE PROPS // OBJECT OF THIS COMPONENT
 import { requestUserData } from '../../ducks/userReducer'
-import { requestBudgetData } from '../../ducks/budgetReducer'
+import { requestBudgetData, addPurchase, removePurchase } from '../../ducks/budgetReducer'
+
 
 
 class Budget extends Component {
@@ -19,6 +20,8 @@ class Budget extends Component {
     //  step #5 WHEN THE COMPONENT MOUNTS, THE ACTION CREATOR IS INVOKED, THE REDUCER FUNCTION FIRES, AND STATE IS UPDATED ACCORDINGLY   // IN THE REDUX STORE
     this.props.requestUserData();
     this.props.requestBudgetData();
+    this.props.addPurchase();
+    this.props.removePurchase();
   }
 
 
@@ -27,6 +30,7 @@ class Budget extends Component {
     //DESTRUCTURE THE LOADING PROPERTY FROM THE BUDGET OBJECT THAT WAS MAPPED TO PROPS THORUGH MAPSTATEPROPS/CONNECT
     const { loading, purchases, badgeLimit } = this.props.budget
     const { firstName, lastName } = this.props.user
+    const { addPurchase } = this.props.addPurchase;
 
     return (
       //UPDATE THE TURNARY TO CHECK WHETHER OR NOT THE LOADING PROPERTY ON THE BUDGET OBJECT IS TRUE. IF SO, THEN THE LOADIN COMPONENT SHOULD BE DISPLAYED
@@ -36,8 +40,8 @@ class Budget extends Component {
           <Nav firstName={firstName} lastName={lastName} />
           <div className='content-container'>
             <div className="purchases-container">
-              <AddPurchase />
-              <DisplayPurchases purchases={purchases} />
+              <AddPurchase addPurchase={addPurchase} />
+              <DisplayPurchases purchases={purchases} removePurchase={this.props.removePurchase} />
             </div>
             <div className='chart-container'>
               <Chart1 purchases={purchases} badgeLimit={badgeLimit} />
@@ -60,4 +64,4 @@ function mapStateToProps(state) {
 //THIS FUNCTION TAKE IN THE REDU STORE STATE AND MAPS THE BUDGET REDEUCER INFO FROM THE REDUX STORE TO A BUDGET KEY ON THIS COMPONENT'S PROPS OBJECT
 
 // step #5 IN ORDER TO ACCESS THE REQUESTUSERDATA ACTION CREATOR, YOU NEED TO CONNECT IT TO THE REDUCER FUNCTION THROUGH THE CONNECT METHOD. THE CONNECT METHOD ACCEPTS TWO ARGUMENTS, A MAPSTATETOPROPS OBJECT, AND A MAPDISPATCHTOPROPS OBJECT. OUR DISPATCHED ACTIONS GO INSIDE OF THE SECOND ARGUMENT OBJECT AS A KEY/VALUE PAIR.
-export default connect(mapStateToProps, { requestUserData, requestBudgetData })(Budget);
+export default connect(mapStateToProps, { requestUserData, requestBudgetData, addPurchase, removePurchase })(Budget);
