@@ -1,6 +1,6 @@
 
 //IMPORTING THE REDUX FUNCTIONS, MIDDLEWARE, AND REDUCERS THAT WILL BE USED TO CREATE A STORE
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import promiseMiddleware from 'redux-promise-middleware'
 import budgetReducer from './budgetReducer'
 import userReducer from './userReducer'
@@ -15,7 +15,5 @@ const rootReducer = combineReducers({
 //CREATE THE STORE USING THE CREATE STORE FUNCTION. PASS IN THE APPROPRIATE ARGUMENTS. 
 //YOU ARE EXPLORING IT SO THAT IT CAN BE USED BY THE PROVIDER COMPOENT LATER ON. 
 
-export default createStore(
-    rootReducer,
-    applyMiddleware(promiseMiddleware)
+export default createStore(rootReducer, applyMiddleware(promiseMiddleware)
 )
